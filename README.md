@@ -1,7 +1,7 @@
 # Study_Tracker_Dashboard
 A simple dashboard created to keep a track of your study schedule.
 
-# Study Tracker Dashboard 📊
+# Study Tracker Dashboard
 
 A Flask-based web application designed to help students track and analyze daily study sessions.
 
@@ -24,12 +24,13 @@ A Flask-based web application designed to help students track and analyze daily 
 
 ## Project Structure
 
-Study_Tracker_Dashboard/
+```Study_Tracker_Dashboard/
 │
 ├── app.py
 ├── data.json
 └── templates/
     └── index.html
+```
 
 ## Future Improvements
 - Authentication system
