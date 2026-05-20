@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Tracker</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            background: rgb(9, 9, 53);
+            color: white;
+            padding: 18px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            padding: 25px;
+            align-items: flex-start;
+        }
+
+        .left-panel {
+            flex: 2;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 90%;
+            padding: 13px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            background: rgb(9, 9, 53);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: rgba(9, 9, 53, 0.9);
+        }
+
+        .reset-btn {
+            background: crimson;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f4f6f8;
+            margin: 12px 0;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 17px;
+        }
+
+        .chart-box {
+            height: 330px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 260px !important;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Study Tracker</h1>
+
+    <div class="main-container">
+
+        <div class="left-panel">
+
+            <div class="card">
+                <h2>Add Study Session for {{ selected_date }}</h2>
+
+                <form method="POST">
+                    <input type="hidden" name="session_date" value="{{ selected_date }}">
+
+                    <input type="text" name="subject" placeholder="Subject" required>
+                    <input type="number" step="0.5" name="time" placeholder="Hours" required>
+
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Total Study Time for {{ selected_date }}</h2>
+
+                <ul>
+                    {% for subject, time in totals.items() %}
+                        <li>{{ subject }} : {{ time }} hrs</li>
+                    {% endfor %}
+                </ul>
+
+                {% if most %}
+                    <h3>Most Studied: {{ most }}</h3>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="right-panel">
+
+            <div class="card">
+                <h2>Select Date</h2>
+
+                <form method="GET">
+                    <input type="date" name="date" value="{{ selected_date }}">
+                    <button type="submit">Show</button>
+                </form>
+            </div>
+
+            <div class="card chart-box">
+                <h2>Weekly Progress</h2>
+                <canvas id="weekChart"></canvas>
+            </div>
+
+            <form method="POST" action="/reset">
+                <button class="reset-btn" type="submit">Reset Everything</button>
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        const labels = {{ week_dates | tojson | safe }};
+        const dataValues = {{ week_hours | tojson | safe }};
+
+        const ctx = document.getElementById("weekChart");
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Hours Studied",
+                    data: dataValues,
+                    backgroundColor: "rgb(9, 9, 53)"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

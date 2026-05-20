@@ -1,0 +1,32 @@
+[
+    {
+        "subject": "DSA",
+        "time": 4.0,
+        "date": "2026-05-18"
+    },
+    {
+        "subject": "Maths",
+        "time": 2.0,
+        "date": "2026-05-18"
+    },
+    {
+        "subject": "Organic Chemistry",
+        "time": 1.5,
+        "date": "2026-05-18"
+    },
+    {
+        "subject": "DSA",
+        "time": 2.0,
+        "date": "2026-05-18"
+    },
+    {
+        "subject": "DSA",
+        "time": 3.0,
+        "date": "2026-05-17"
+    },
+    {
+        "subject": "Maths",
+        "time": 1.0,
+        "date": "2026-05-17"
+    }
+]
